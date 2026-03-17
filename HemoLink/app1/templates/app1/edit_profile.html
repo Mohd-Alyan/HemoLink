@@ -1,0 +1,110 @@
+{% extends 'app1/base.html' %}
+
+{% block title %}Edit Profile - HemoLink{% endblock %}
+
+{% block content %}
+<div class="px-6 py-12 lg:py-20 max-w-2xl mx-auto min-h-[70vh]">
+
+    <div class="mb-10 fade-up">
+        <h1 class="text-3xl font-extrabold text-brand-dark tracking-tight mb-2">Edit Profile</h1>
+        <p class="text-gray-500 font-medium text-sm">Update your personal information and medical details.</p>
+    </div>
+
+    <form method="post" action="{% url 'edit_profile' %}" class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 fade-up">
+        {% csrf_token %}
+
+        <div class="space-y-5">
+            <div class="flex gap-4">
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-gray-700 tracking-wide mb-1">FIRST NAME</label>
+                    <input type="text" name="first_name" value="{{ user.first_name }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none transition font-medium">
+                </div>
+                <div class="flex-1">
+                    <label class="block text-xs font-bold text-gray-700 tracking-wide mb-1">LAST NAME</label>
+                    <input type="text" name="last_name" value="{{ user.last_name }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none transition font-medium">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 tracking-wide mb-1">EMAIL</label>
+                <input type="email" name="email" value="{{ user.email }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none transition font-medium">
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 tracking-wide mb-1">PHONE NUMBER</label>
+                <input type="tel" name="phone_number" value="{{ user.phone_number|default:'' }}" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none transition font-medium">
+            </div>
+
+            {% if donor_profile %}
+            <div>
+                <label class="block text-xs font-bold text-gray-700 tracking-wide mb-1">BLOOD GROUP</label>
+                <select name="blood_group" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none transition font-medium text-sm appearance-none cursor-pointer">
+                    {% for bg in "A+,A-,B+,B-,O+,O-,AB+,AB-"|make_list %}{% endfor %}
+                    <option value="A+" {% if donor_profile.blood_group == 'A+' %}selected{% endif %}>A+</option>
+                    <option value="A-" {% if donor_profile.blood_group == 'A-' %}selected{% endif %}>A-</option>
+                    <option value="B+" {% if donor_profile.blood_group == 'B+' %}selected{% endif %}>B+</option>
+                    <option value="B-" {% if donor_profile.blood_group == 'B-' %}selected{% endif %}>B-</option>
+                    <option value="O+" {% if donor_profile.blood_group == 'O+' %}selected{% endif %}>O+</option>
+                    <option value="O-" {% if donor_profile.blood_group == 'O-' %}selected{% endif %}>O-</option>
+                    <option value="AB+" {% if donor_profile.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                    <option value="AB-" {% if donor_profile.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-gray-700 tracking-wide mb-2">LOCATION (GPS)</label>
+                <div class="flex gap-4">
+                    <div class="flex-1">
+                        <input type="text" name="latitude" id="lat-input" value="{{ donor_profile.latitude|default:'' }}" placeholder="Latitude" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none transition font-medium text-sm">
+                    </div>
+                    <div class="flex-1">
+                        <input type="text" name="longitude" id="lng-input" value="{{ donor_profile.longitude|default:'' }}" placeholder="Longitude" class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none transition font-medium text-sm">
+                    </div>
+                </div>
+                <button type="button" onclick="getLocation()" class="mt-3 w-full bg-gray-100 hover:bg-gray-200 text-brand-dark font-bold text-sm py-2.5 rounded-xl transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                    Detect My Location
+                </button>
+                <p id="geo-status" class="text-[0.6rem] text-gray-400 italic mt-2"></p>
+            </div>
+            {% endif %}
+
+            <div class="flex gap-4 pt-4">
+                <button type="submit" class="flex-1 bg-brand-red text-white font-bold py-3.5 rounded-xl hover:bg-red-800 transition-all shadow-[0_8px_30px_rgb(193,18,31,0.3)]">
+                    Save Changes
+                </button>
+                <a href="{% url 'dashboard' %}" class="flex-1 text-center bg-gray-100 hover:bg-gray-200 text-brand-dark font-bold py-3.5 rounded-xl transition-colors">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function getLocation() {
+        const status = document.getElementById('geo-status');
+        if (!navigator.geolocation) {
+            status.textContent = 'Geolocation is not supported by your browser.';
+            return;
+        }
+        status.textContent = 'Detecting location...';
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                document.getElementById('lat-input').value = position.coords.latitude.toFixed(6);
+                document.getElementById('lng-input').value = position.coords.longitude.toFixed(6);
+                status.textContent = 'Location detected successfully!';
+                status.classList.remove('text-gray-400');
+                status.classList.add('text-green-600');
+            },
+            (error) => {
+                status.textContent = 'Unable to detect location: ' + error.message;
+                status.classList.remove('text-gray-400');
+                status.classList.add('text-red-500');
+            }
+        );
+    }
+</script>
+{% endblock %}

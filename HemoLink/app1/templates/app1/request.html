@@ -1,0 +1,147 @@
+{% extends 'app1/base.html' %}
+
+{% block title %}Emergency Blood Requests - HemoLink{% endblock %}
+
+{% block content %}
+<div class="px-6 py-12 lg:py-20 max-w-7xl mx-auto flex flex-col lg:flex-row gap-12">
+    
+    <!-- Left Col: Active Requests (List) -->
+    <div class="lg:w-2/3 space-y-8">
+        <div class="mb-6 fade-up">
+            <h1 class="text-3xl font-extrabold text-brand-dark tracking-tight mb-2">Active Needs</h1>
+            <p class="text-gray-500 font-medium text-sm">Critical patients needing immediate clinical assistance off the network.</p>
+        </div>
+
+        <div class="space-y-6">
+            {% if active_requests %}
+                {% for req in active_requests %}
+                <!-- Request Card -->
+                <div class="bg-white rounded-3xl p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 items-center justify-between hover:border-red-100 transition-colors duration-300 fade-up">
+                    <div class="flex items-center gap-6 w-full md:w-auto">
+                        <div class="w-14 h-14 {% if req.urgency_level == 'critical' %}bg-brand-red text-white{% else %}bg-red-50 text-brand-red{% endif %} rounded-2xl flex items-center justify-center font-black text-xl shadow-md shrink-0">
+                            {{ req.blood_group_required }}
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-brand-dark text-lg">{{ req.patient_name }}</h3>
+                            <div class="text-xs font-semibold text-gray-400 uppercase tracking-widest mt-1 flex gap-3">
+                                <span class="flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                                    {{ req.location }}
+                                </span>
+                                <span>{{ req.units_required }} Units</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-4 w-full md:w-auto">
+                        <span class="px-3 py-1 rounded-full text-[0.6rem] font-bold uppercase tracking-wider 
+                            {% if req.urgency_level == 'critical' %}bg-red-100 text-brand-red
+                            {% elif req.urgency_level == 'high' %}bg-orange-100 text-orange-600
+                            {% else %}bg-gray-100 text-gray-500{% endif %}">
+                            {{ req.urgency_level }}
+                        </span>
+                        <span class="text-xs font-semibold text-gray-400">{{ req.pledges.count }} pledge(s)</span>
+                        {% if req.id in user_pledged_ids %}
+                            <span class="bg-green-100 text-green-700 font-bold text-sm px-5 py-2.5 rounded-xl cursor-default">
+                                ✓ Pledged
+                            </span>
+                        {% elif req.requested_by == user %}
+                            {% if req.pledges.count > 0 %}
+                                <form method="post" action="{% url 'fulfill_request' req.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold text-sm px-5 py-2.5 rounded-xl transition-colors">
+                                        ✓ Fulfill
+                                    </button>
+                                </form>
+                            {% else %}
+                                <span class="bg-gray-50 text-gray-400 font-bold text-sm px-5 py-2.5 rounded-xl cursor-default">
+                                    Your Request
+                                </span>
+                            {% endif %}
+                        {% else %}
+                            <form method="post" action="{% url 'pledge_request' req.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="bg-gray-100 hover:bg-brand-red hover:text-white transition-all text-brand-dark font-bold text-sm px-5 py-2.5 rounded-xl">
+                                    Pledge
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="py-12 bg-gray-50 rounded-3xl border border-dashed border-gray-200 flex justify-center text-center fade-up">
+                    <div>
+                        <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <p class="font-bold text-brand-dark">No Active Requests</p>
+                        <p class="text-xs text-gray-500">The network currently has no critical needs.</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Right Col: Create Request Form -->
+    <div class="lg:w-1/3">
+        <div class="bg-brand-dark rounded-3xl p-8 shadow-2xl relative overflow-hidden fade-up" style="transition-delay: 200ms;">
+            
+            <div class="absolute -top-10 -right-10 w-40 h-40 bg-white opacity-5 rounded-full blur-2xl"></div>
+
+            <div class="mb-8">
+                <h2 class="text-xl font-bold text-white mb-1">Issue Request</h2>
+                <p class="text-xs font-semibold text-gray-400">Broadcast an emergency requirement to verified donors in your vicinity.</p>
+            </div>
+
+            <form method="post" action="{% url 'requests' %}" class="space-y-4">
+                {% csrf_token %}
+                <div>
+                    <label class="block text-[0.65rem] font-bold text-gray-400 tracking-wider mb-1 uppercase">Patient Name</label>
+                    <input type="text" name="patient_name" class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white focus:bg-gray-900 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition outline-none text-sm" required>
+                </div>
+                
+                <div class="flex gap-4">
+                    <div class="w-1/2">
+                        <label class="block text-[0.65rem] font-bold text-gray-400 tracking-wider mb-1 uppercase">Blood Type</label>
+                        <select name="blood_group_required" class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white focus:bg-gray-900 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition outline-none text-sm appearance-none cursor-pointer" required>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block text-[0.65rem] font-bold text-gray-400 tracking-wider mb-1 uppercase">Units</label>
+                        <input type="number" name="units_required" min="1" value="1" class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white focus:bg-gray-900 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition outline-none text-sm" required>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[0.65rem] font-bold text-gray-400 tracking-wider mb-1 uppercase">Hospital Location</label>
+                    <input type="text" name="location" class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white focus:bg-gray-900 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition outline-none text-sm" required>
+                </div>
+
+                <div>
+                    <label class="block text-[0.65rem] font-bold text-gray-400 tracking-wider mb-1 uppercase">Urgency</label>
+                    <select name="urgency_level" class="w-full px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-white focus:bg-gray-900 focus:border-brand-red focus:ring-1 focus:ring-brand-red transition outline-none text-sm appearance-none cursor-pointer" required>
+                        <option value="normal">Normal</option>
+                        <option value="high">High</option>
+                        <option value="critical">Critical</option>
+                    </select>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" class="w-full bg-brand-red hover:bg-red-800 text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg shadow-red-500/20 text-sm flex justify-center items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                        Broadcast Request
+                    </button>
+                    <p class="text-center text-[0.6rem] text-gray-500 mt-3 font-semibold">Submitting false alarms may lead to account suspension.</p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HemoLink - {% block title %}Digital Blood Donation Network{% endblock %}</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Config for Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-red': '#c1121f',
+                        'brand-dark': '#1a1a1a',
+                        'brand-gray': '#f4f4f4',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f9fafb;
+            color: #1a1a1a;
+        }
+        /* Smooth scrolling */
+        html { scroll-behavior: smooth; }
+        
+        /* Fade in animation */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="w-full bg-[#f9fafb] py-6 px-4 sm:px-8 lg:px-16 flex items-center justify-between sticky top-0 z-50">
+        <!-- Logo -->
+        <a href="{% url 'home' %}" class="text-xl sm:text-2xl font-extrabold tracking-tight text-brand-dark">
+            HemoLink
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center space-x-8 text-sm font-semibold tracking-wide">
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="text-gray-600 hover:text-brand-red transition-colors">Dashboard</a>
+                <a href="{% url 'requests' %}" class="text-gray-600 hover:text-brand-red transition-colors">Requests</a>
+                <a href="{% url 'status' %}" class="text-gray-600 hover:text-brand-red transition-colors">Status</a>
+            {% else %}
+                <a href="#" class="text-gray-600 hover:text-brand-red transition-colors">About</a>
+                <a href="#" class="text-gray-600 hover:text-brand-red transition-colors">How it Works</a>
+                <a href="#" class="text-gray-600 hover:text-brand-red transition-colors">Contact</a>
+            {% endif %}
+        </div>
+
+        <!-- Right Side -->
+        <div class="flex items-center space-x-6 text-sm font-semibold">
+            {% if user.is_authenticated %}
+                <a href="{% url 'logout' %}" class="text-gray-600 hover:text-brand-red hidden sm:block">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}" class="text-gray-600 hover:text-brand-red hidden sm:block">Login</a>
+                <a href="{% url 'login' %}" class="bg-brand-red text-white px-6 py-2.5 rounded-full hover:bg-red-800 transition-colors shadow-lg shadow-red-500/30">Donate Now</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#f0f2f5] py-8 px-4 sm:px-8 lg:px-16 mt-auto">
+        <div class="flex flex-col md:flex-row items-center justify-between border-t border-gray-300 pt-6 text-xs text-gray-500 font-medium">
+            <div class="mb-4 md:mb-0">
+                <span class="font-bold text-gray-800 mr-2">HemoLink</span> 
+                © 2024 DIGITAL BLOOD DONATION NETWORK. ALL RIGHTS RESERVED.
+            </div>
+            <div class="flex space-x-6">
+                <a href="#" class="hover:text-gray-800 transition">PRIVACY POLICY</a>
+                <a href="#" class="hover:text-gray-800 transition">TERMS OF SERVICE</a>
+                <a href="#" class="hover:text-gray-800 transition">DONOR GUIDELINES</a>
+                <a href="#" class="hover:text-gray-800 transition">HOSPITAL PORTAL</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JS for Animations -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-up').forEach((el) => observer.observe(el));
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

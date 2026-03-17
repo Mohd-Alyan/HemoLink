@@ -1,0 +1,252 @@
+{% extends 'app1/base.html' %}
+
+{% block title %}Dashboard - HemoLink{% endblock %}
+
+{% block content %}
+<div class="px-6 py-12 lg:py-20 max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-10 fade-up">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mb-2">Welcome, {{ user.username|default:"User" }}</h1>
+        <p class="text-gray-500 font-medium">
+            {% if user.user_type == 'donor' %}Manage your clinical profile and track your impact.
+            {% elif user.user_type == 'hospital' %}Manage blood requests and track incoming pledges.
+            {% elif user.user_type == 'patient' %}Track your blood requests and donor responses.
+            {% else %}Manage your network profile.{% endif %}
+        </p>
+    </div>
+
+    {% if user.user_type == 'donor' %}
+    <!-- ==================== DONOR DASHBOARD ==================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Col: Profile & Availability -->
+        <div class="lg:col-span-1 space-y-8">
+            <!-- Profile Card -->
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 fade-up">
+                <div class="flex items-center space-x-6 mb-8">
+                    <div class="w-16 h-16 bg-red-100 text-brand-red rounded-full flex items-center justify-center font-black text-2xl shadow-inner">
+                        {% if donor_profile %}{{ donor_profile.blood_group|default:"N/A" }}{% else %}?{% endif %}
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-brand-dark">{{ user.get_full_name|default:user.username }}</h2>
+                        <p class="text-[0.65rem] font-bold tracking-[0.15em] text-gray-400 uppercase mt-1">Verified Donor</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-50">
+                        <span class="text-xs font-bold text-gray-500">LAST DONATION</span>
+                        <span class="text-sm font-semibold text-brand-dark">{% if donor_profile and donor_profile.last_donation_date %}{{ donor_profile.last_donation_date }}{% else %}Never{% endif %}</span>
+                    </div>
+                    <div class="flex justify-between items-center pb-4 border-b border-gray-50">
+                        <span class="text-xs font-bold text-gray-500">PHONE</span>
+                        <span class="text-sm font-semibold text-brand-dark">{{ user.phone_number|default:"Not set" }}</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <span class="text-xs font-bold text-gray-500">EMERGENCY ALERTS</span>
+                        <label class="flex items-center cursor-pointer">
+                            <div class="relative">
+                                <input type="checkbox" id="availability-toggle" class="sr-only" {% if donor_profile and donor_profile.is_available %}checked{% endif %}>
+                                <div class="block bg-gray-200 w-12 h-7 rounded-full transition duration-300" id="toggle-bg"></div>
+                                <div class="dot absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition duration-300 transform shadow" id="toggle-dot"></div>
+                            </div>
+                        </label>
+                    </div>
+                    <p class="text-[0.6rem] text-gray-400 italic mt-2">Enabling alerts allows nearby hospitals to contact you for critical needs.</p>
+                </div>
+
+                <a href="{% url 'edit_profile' %}" class="mt-6 block w-full text-center bg-gray-100 hover:bg-gray-200 text-brand-dark font-bold text-sm py-3 rounded-xl transition-colors">
+                    Edit Profile
+                </a>
+            </div>
+
+            <!-- Locator Card -->
+            <div class="bg-brand-dark text-white rounded-3xl p-8 shadow-xl relative overflow-hidden fade-up" style="transition-delay: 100ms;">
+                <div class="absolute -right-16 -bottom-16 opacity-10">
+                    <svg class="w-48 h-48" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Find a Clinic</h3>
+                <p class="text-sm text-gray-300 mb-6 font-medium">Locate the nearest verified blood banks in our network.</p>
+                <button onclick="window.location.href='{% url 'blood_banks' %}'" class="bg-brand-red hover:bg-red-800 transition-colors px-6 py-3 rounded-xl font-bold text-sm w-full shadow-lg shadow-red-500/20">
+                    Open Locator
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Col: Donation History -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 fade-up" style="transition-delay: 200ms;">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-bold text-brand-dark">Donation History</h2>
+                    <span class="text-xs font-bold text-gray-400">{{ donation_history|length }} record(s)</span>
+                </div>
+
+                {% if donation_history %}
+                    <div class="space-y-4">
+                        {% for donation in donation_history %}
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 bg-red-100 text-brand-red rounded-xl flex items-center justify-center font-bold text-sm">
+                                    {{ donation.blood_group }}
+                                </div>
+                                <div>
+                                    <p class="font-bold text-brand-dark text-sm">{{ donation.units_donated }} unit(s) donated</p>
+                                    <p class="text-xs text-gray-400 font-medium">{{ donation.location }}</p>
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold text-gray-400">{{ donation.donated_at|date:"M d, Y" }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex flex-col items-center justify-center text-center">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-gray-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        </div>
+                        <p class="font-bold text-brand-dark mb-1">No donations recorded yet</p>
+                        <p class="text-xs text-gray-500 font-medium max-w-xs">Your clinical journey begins with a single drop. Pledge to a request to get started.</p>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="bg-red-50 rounded-3xl p-8 border border-red-100 fade-up" style="transition-delay: 300ms;">
+                <div class="flex items-start space-x-4">
+                    <div class="w-10 h-10 bg-brand-red text-white flex rounded-full items-center justify-center shrink-0 shadow-md">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-bold text-brand-red mb-1">Medical Tip</h3>
+                        <p class="text-xs text-red-900 font-medium leading-relaxed">
+                            Stay hydrated and eat a healthy, iron-rich meal before donating. Remember that O-Negative blood types are currently in high demand across our network.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <!-- ==================== HOSPITAL / PATIENT DASHBOARD ==================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Left Col: Quick Actions -->
+        <div class="lg:col-span-1 space-y-8">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 fade-up">
+                <div class="flex items-center space-x-6 mb-8">
+                    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center font-black text-lg shadow-inner">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-bold text-brand-dark">{{ user.get_full_name|default:user.username }}</h2>
+                        <p class="text-[0.65rem] font-bold tracking-[0.15em] text-gray-400 uppercase mt-1">{{ user.get_user_type_display }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <a href="{% url 'requests' %}" class="block w-full text-center bg-brand-red hover:bg-red-800 text-white font-bold text-sm py-3.5 rounded-xl transition-colors shadow-lg shadow-red-500/20">
+                        + New Blood Request
+                    </a>
+                    <a href="{% url 'status' %}" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-brand-dark font-bold text-sm py-3 rounded-xl transition-colors">
+                        View Notifications
+                    </a>
+                    <a href="{% url 'blood_banks' %}" class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-brand-dark font-bold text-sm py-3 rounded-xl transition-colors">
+                        Find Blood Banks
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Col: My Requests + Pledges -->
+        <div class="lg:col-span-2 space-y-8">
+            <div class="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 fade-up" style="transition-delay: 200ms;">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-xl font-bold text-brand-dark">My Blood Requests</h2>
+                    <span class="text-xs font-bold text-gray-400">{{ my_requests|length }} request(s)</span>
+                </div>
+
+                {% if my_requests %}
+                    <div class="space-y-4">
+                        {% for req in my_requests %}
+                        <div class="p-5 rounded-2xl border {% if req.status == 'fulfilled' %}bg-green-50 border-green-200{% else %}bg-gray-50 border-gray-100{% endif %}">
+                            <div class="flex items-center justify-between mb-3">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 {% if req.status == 'fulfilled' %}bg-green-100 text-green-700{% else %}bg-red-100 text-brand-red{% endif %} rounded-xl flex items-center justify-center font-bold text-sm">
+                                        {{ req.blood_group_required }}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-brand-dark">{{ req.patient_name }}</p>
+                                        <p class="text-xs text-gray-400 font-medium">{{ req.location }} · {{ req.units_required }} units · {{ req.created_at|date:"M d, Y" }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="px-3 py-1 rounded-full text-[0.6rem] font-bold uppercase tracking-wider
+                                        {% if req.status == 'fulfilled' %}bg-green-100 text-green-700
+                                        {% elif req.urgency_level == 'critical' %}bg-red-100 text-brand-red
+                                        {% elif req.urgency_level == 'high' %}bg-orange-100 text-orange-600
+                                        {% else %}bg-gray-100 text-gray-500{% endif %}">
+                                        {% if req.status == 'fulfilled' %}Fulfilled{% else %}{{ req.urgency_level }}{% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <p class="text-xs font-semibold text-gray-500">{{ req.pledges.count }} pledge(s) received</p>
+                                {% if req.status == 'pending' and req.pledges.count > 0 %}
+                                    <form method="post" action="{% url 'fulfill_request' req.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="bg-green-600 hover:bg-green-700 text-white font-bold text-xs px-4 py-2 rounded-lg transition-colors">
+                                            ✓ Mark Fulfilled
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="py-12 bg-gray-50 rounded-2xl border border-dashed border-gray-200 flex flex-col items-center justify-center text-center">
+                        <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-sm mb-4 text-gray-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                        </div>
+                        <p class="font-bold text-brand-dark mb-1">No requests yet</p>
+                        <p class="text-xs text-gray-500 font-medium max-w-xs">Create a blood request to find matching donors quickly.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const toggle = document.getElementById('availability-toggle');
+        if (!toggle) return;
+        const toggleBg = document.getElementById('toggle-bg');
+        const toggleDot = document.getElementById('toggle-dot');
+
+        function updateToggle() {
+            if (toggle.checked) {
+                toggleBg.classList.replace('bg-gray-200', 'bg-brand-red');
+                toggleDot.style.transform = 'translateX(1.25rem)';
+            } else {
+                toggleBg.classList.replace('bg-brand-red', 'bg-gray-200');
+                toggleDot.style.transform = 'translateX(0)';
+            }
+        }
+
+        toggle.addEventListener('change', () => {
+            updateToggle();
+            fetch('{% url "toggle_availability" %}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                    'Content-Type': 'application/json',
+                },
+            });
+        });
+        updateToggle();
+    });
+</script>
+{% endblock %}

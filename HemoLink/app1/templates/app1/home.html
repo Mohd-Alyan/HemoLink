@@ -1,239 +1,138 @@
-<!DOCTYPE html>
+{% extends 'app1/base.html' %}
 
-<html lang="en"><head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Hemo Link | VitalFlow Digital Blood Network</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Roboto:wght@400;500&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            colors: {
-              "background": "#f9f9f9",
-              "secondary-container": "#d1e2ec",
-              "on-secondary-container": "#55656d",
-              "on-primary": "#ffffff",
-              "surface-variant": "#e2e2e2",
-              "primary-container": "#d2312f",
-              "secondary-fixed": "#d4e5ef",
-              "primary": "#ae131a",
-              "inverse-on-surface": "#f1f1f1",
-              "surface-container": "#eeeeee",
-              "on-surface": "#1a1c1c",
-              "inverse-primary": "#ffb4ac",
-              "inverse-surface": "#2f3131",
-              "surface-container-lowest": "#ffffff",
-              "on-secondary-fixed-variant": "#394951",
-              "surface-container-highest": "#e2e2e2",
-              "tertiary-fixed": "#bee9ff",
-              "surface-container-low": "#f3f3f3",
-              "on-tertiary-fixed-variant": "#004d65",
-              "surface": "#f9f9f9",
-              "outline": "#8f6f6c",
-              "surface-bright": "#f9f9f9",
-              "outline-variant": "#e4beba",
-              "on-error": "#ffffff",
-              "tertiary-container": "#00799c",
-              "on-secondary": "#ffffff",
-              "on-primary-container": "#fff2f0",
-              "primary-fixed-dim": "#ffb4ac",
-              "on-secondary-fixed": "#0d1e25",
-              "on-background": "#1a1c1c",
-              "surface-dim": "#dadada",
-              "secondary-fixed-dim": "#b8c9d3",
-              "on-error-container": "#93000a",
-              "on-primary-fixed": "#410003",
-              "on-primary-fixed-variant": "#93000e",
-              "on-tertiary-fixed": "#001f2a",
-              "error": "#ba1a1a",
-              "surface-container-high": "#e8e8e8",
-              "tertiary-fixed-dim": "#7bd1f8",
-              "on-surface-variant": "#5b403d",
-              "on-tertiary-container": "#e9f7ff",
-              "error-container": "#ffdad6",
-              "secondary": "#506169",
-              "tertiary": "#005f7b",
-              "primary-fixed": "#ffdad6",
-              "surface-tint": "#b91d20",
-              "on-tertiary": "#ffffff"
-            },
-            fontFamily: {
-              "headline": ["Inter", "sans-serif"],
-              "body": ["Roboto", "sans-serif"],
-              "label": ["Roboto", "sans-serif"]
-            },
-            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px", "2xl": "1rem"},
-          },
-        },
-      }
-    </script>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        body { font-family: 'Roboto', sans-serif; background-color: #f9f9f9; color: #1a1c1c; }
-        h1, h2, h3, h4 { font-family: 'Inter', sans-serif; }
-        .clinical-shadow { box-shadow: 0 12px 24px rgba(185, 29, 32, 0.06); }
-        .gradient-primary { background: linear-gradient(135deg, #ae131a 0%, #d2312f 100%); }
-    </style>
-</head>
-<body class="bg-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
-<header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50">
-<nav class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
-<div class="text-2xl font-bold tracking-tighter text-primary">Hemo Link</div>
-<div class="hidden md:flex items-center gap-8">
-<a class="text-primary font-semibold border-b-2 border-primary pb-1" href="#">Network</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Impact</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Security</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors" href="#">Rewards</a>
-</div>
-<button class="gradient-primary text-on-primary px-6 py-2.5 rounded-2xl font-semibold clinical-shadow hover:scale-[0.98] transition-all duration-200">
-                Sign In / Register
-            </button>
-</nav>
-</header>
-<main>
-<section class="relative overflow-hidden pt-20 pb-32">
-<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-<div class="z-10">
-<span class="inline-block px-4 py-1.5 bg-primary-fixed text-on-primary-fixed-variant text-sm font-bold rounded-full mb-6 tracking-wide">VITALFLOW ECOSYSTEM</span>
-<h1 class="text-6xl md:text-7xl font-bold tracking-tighter text-on-background leading-[1.05] mb-8">
-                        Connecting the <span class="text-primary">Pulse</span> of Life
-                    </h1>
-<p class="text-body-lg text-on-surface-variant max-w-lg mb-10 leading-relaxed">
-                        Real-time blood supply chain management for the modern medical age. Orchestrate logistics, manage donors, and save lives with clinical precision.
-                    </p>
-<div class="flex flex-col sm:flex-row gap-4">
-<button class="gradient-primary text-on-primary px-8 py-4 rounded-2xl font-bold clinical-shadow hover:scale-[0.98] transition-transform">
-                            Start Your Network
-                        </button>
-<button class="bg-surface-container-lowest text-primary px-8 py-4 rounded-2xl font-bold hover:bg-surface-container-high transition-all">
-                            View Documentation
-                        </button>
-</div>
-</div>
-<div class="relative">
-<div class="aspect-square rounded-[2rem] overflow-hidden clinical-shadow">
-<img alt="Modern medical facility" class="w-full h-full object-cover" data-alt="Modern medical laboratory with red lighting accents" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvfS3yvUKqv1q003KbDShdxue-OfBIzhaGLBCI2nd9aXu17hvlADLCDDCIFbDauF65FUMW3h_3puFAUa-7AJaYUB53ZD7jaSdfHzjEQgBq4eI7zj3P3UkVd0gXAY6INOE6lM8-xqWS8VvDU30ERRVACLtBR8860cKytI4emDWDxHbc5wGCFf8Jw2NtSeI46wvq1Fb2MLmNoZrDlTSvwKxeXw1RoB0AkMP_slpj-3PX1Sd4v8M537mEOGXof8veFP5AL36rJ7SWTXA"/>
-</div>
-<div class="absolute -bottom-6 -left-6 bg-surface-container-lowest p-6 rounded-2xl clinical-shadow max-w-xs border-l-4 border-primary">
-<div class="flex items-center gap-4 mb-2">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">favorite</span>
-<span class="text-sm font-bold text-on-background">Live Supply Status</span>
-</div>
-<p class="text-xs text-on-surface-variant font-medium">Region: North Atlantic Sector. Supply at 94% capacity. Priority: Type O Negative.</p>
-</div>
-</div>
-</div>
-<div class="absolute top-0 right-0 -z-10 w-1/3 h-full bg-surface-container-low rounded-bl-[10rem]"></div>
-</section>
-<section class="bg-surface-container-low py-32">
-<div class="max-w-7xl mx-auto px-8">
-<div class="mb-20 text-center">
-<h2 class="text-4xl font-bold tracking-tight text-on-background mb-4">Precision Infrastructure</h2>
-<div class="h-1 w-20 bg-primary mx-auto"></div>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-<div class="bg-surface-container-lowest p-10 rounded-2xl hover:translate-y-[-4px] transition-transform duration-300">
-<div class="w-14 h-14 bg-primary-fixed flex items-center justify-center rounded-xl mb-8">
-<span class="material-symbols-outlined text-primary text-3xl">insights</span>
-</div>
-<h3 class="text-xl font-bold mb-4">Real-time Analytics</h3>
-<p class="text-on-surface-variant leading-relaxed">Advanced dashboarding to track blood supply live across your entire hospital network with predictive stocking.</p>
-</div>
-<div class="bg-surface-container-lowest p-10 rounded-2xl hover:translate-y-[-4px] transition-transform duration-300">
-<div class="w-14 h-14 bg-secondary-fixed flex items-center justify-center rounded-xl mb-8">
-<span class="material-symbols-outlined text-secondary text-3xl">verified_user</span>
-</div>
-<h3 class="text-xl font-bold mb-4">Secure Matching</h3>
-<p class="text-on-surface-variant leading-relaxed">HIPAA-compliant donor matching algorithms that ensure the right blood reaches the right patient instantly.</p>
-</div>
-<div class="bg-surface-container-lowest p-10 rounded-2xl hover:translate-y-[-4px] transition-transform duration-300">
-<div class="w-14 h-14 bg-tertiary-fixed flex items-center justify-center rounded-xl mb-8">
-<span class="material-symbols-outlined text-tertiary text-3xl">redeem</span>
-</div>
-<h3 class="text-xl font-bold mb-4">Impact Rewards</h3>
-<p class="text-on-surface-variant leading-relaxed">Gamified incentive structures to reward regular donors and maintain high-retention community engagement.</p>
-</div>
-</div>
-</div>
-</section>
-<section class="py-32 bg-surface">
-<div class="max-w-7xl mx-auto px-8">
-<div class="flex flex-col lg:flex-row gap-16 items-start">
-<div class="lg:w-1/3">
-<h2 class="text-4xl font-bold tracking-tight mb-6">Voiced by the Network</h2>
-<p class="text-on-surface-variant leading-relaxed">Our system is built on the shared experience of those who manage life and those who give it.</p>
-</div>
-<div class="lg:w-2/3 grid grid-cols-1 md:grid-cols-2 gap-8">
-<div class="bg-surface-container-low p-8 rounded-2xl relative">
-<span class="material-symbols-outlined text-outline-variant absolute top-6 right-6 text-4xl opacity-50">format_quote</span>
-<p class="text-lg italic text-on-surface mb-8 leading-relaxed">"VitalFlow transformed our logistics. We've reduced emergency blood shipment costs by 40% while increasing our available stock of rare types."</p>
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full overflow-hidden">
-<img alt="Hospital Administrator" class="w-full h-full object-cover" data-alt="Professional female doctor in clinical attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGQA4JiGjvsnV87sQCqVxPoz1MPP_-dMpnaM_i3I0qS7zGuNGB5clsCiadKwtT55MBl1jBZimum1kxvsPHacpjOSRZkrdlNiSCInuMrr9xLo8apvR2SaP49iicqokFT2kSbfEtqBAK-WDCdoIR1u5WbQKmMQlsPWQ854NTdzxaQRcZva05kS344GfRi4FArZokn65vjHDSC5nsx93uLU2MuxQ8ibLKyV24Cz3-1gw6wRo6NKP1yQliNwT3Cl9O10Dm90pHtqaW4Sw"/>
-</div>
-<div>
-<div class="font-bold text-on-background">Dr. Elena Rossi</div>
-<div class="text-sm text-on-surface-variant">Chief Medical Officer, Saint Jude's</div>
-</div>
-</div>
-</div>
-<div class="bg-surface-container-low p-8 rounded-2xl relative">
-<span class="material-symbols-outlined text-outline-variant absolute top-6 right-6 text-4xl opacity-50">format_quote</span>
-<p class="text-lg italic text-on-surface mb-8 leading-relaxed">"The reward system actually makes me feel connected to the lives being saved. I can see the impact of my donation in real-time."</p>
-<div class="flex items-center gap-4">
-<div class="w-12 h-12 rounded-full overflow-hidden">
-<img alt="Regular Donor" class="w-full h-full object-cover" data-alt="Smiling man in casual clothing" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjXkkiMPH1Ww691PCy9a94oKt4Xmmga5glG8yzxya6sBDArsUC0TNHswiKIzWj9kDj2Z6CIUXv1aXaZbH0KObdMaLE7xSzW2676BlURjA0HBaEoOxY2P9QUT1_1M0gcIey55ew6leQCTh4F78bwmkIBkQqEvMlLsiUMqjhN9pZo3ICe1y5vOuGmqPgd-nuLi9C9GO2fbF5AApd3j4jVJ7ja7VCYXXWdluQJXhvlu0iwuKUxyyvWUtYMzEjbKMlPPm5M2LOaDwNrKg"/>
-</div>
-<div>
-<div class="font-bold text-on-background">Marcus Thorne</div>
-<div class="text-sm text-on-surface-variant">Gold-tier Donor</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section class="max-w-7xl mx-auto px-8 mb-32">
-<div class="gradient-primary rounded-[2.5rem] p-12 md:p-24 text-center text-on-primary clinical-shadow relative overflow-hidden">
-<div class="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
-<circle cx="50" cy="50" fill="none" r="40" stroke="white" stroke-width="0.5"></circle>
-<circle cx="50" cy="50" fill="none" r="30" stroke="white" stroke-width="0.5"></circle>
-</svg>
-</div>
-<div class="relative z-10 max-w-2xl mx-auto">
-<h2 class="text-4xl md:text-5xl font-bold tracking-tight mb-8">Join the Digital Revolution in Blood Donation</h2>
-<p class="text-xl text-on-primary-container opacity-90 mb-12">Empower your healthcare facility with a network that never sleeps.</p>
-<button class="bg-surface-container-lowest text-primary px-10 py-5 rounded-2xl font-bold text-lg hover:shadow-2xl transition-all hover:scale-[1.02]">
-                        Request a Platform Demo
-                    </button>
-</div>
-</div>
-</section>
-</main>
-<footer class="bg-surface-container-low pt-16 pb-8">
-<div class="max-w-7xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 lg:flex lg:justify-between items-end">
-<div>
-<span class="text-xl font-bold text-primary mb-4 block">Hemo Link</span>
-<p class="text-on-surface-variant text-sm max-w-xs mb-8">A Living Pulse Initiative. Engineering the future of medical logistics through ethereal design and clinical logic.</p>
-<div class="flex gap-6 mb-8 lg:mb-0">
-<a class="text-on-surface-variant hover:text-primary underline-offset-4 hover:underline" href="#">Privacy Policy</a>
-<a class="text-on-surface-variant hover:text-primary underline-offset-4 hover:underline" href="#">Medical Standards</a>
-<a class="text-on-surface-variant hover:text-primary underline-offset-4 hover:underline" href="#">Donor Terms</a>
-<a class="text-on-surface-variant hover:text-primary underline-offset-4 hover:underline" href="#">Contact Support</a>
-</div>
-</div>
-<div class="text-on-surface-variant text-xs font-medium">
-                © 2024 The Clinical Ethereal. A Living Pulse Initiative.
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<div class="px-6 sm:px-12 lg:px-24 py-16 lg:py-24 max-w-7xl mx-auto">
+    <!-- Hero Section -->
+    <div class="flex flex-col lg:flex-row items-center justify-between gap-12">
+        
+        <!-- Left Text Content -->
+        <div class="lg:w-1/2 flex flex-col items-start fade-up">
+            <p class="text-[0.65rem] sm:text-xs font-bold tracking-[0.2em] text-brand-red uppercase mb-4">
+                Premium Donation Experience
+            </p>
+            <h1 class="text-5xl sm:text-6xl lg:text-7xl font-extrabold text-brand-dark leading-[1.05] tracking-tight mb-8">
+                Saving Lives<br/>Made Simple
+            </h1>
+            <p class="text-gray-600 text-sm sm:text-base leading-relaxed mb-10 max-w-md font-medium">
+                A sophisticated clinical platform bridging the gap between donors and hospitals with editorial precision and medical excellence.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                <a href="{% url 'login' %}" class="bg-brand-red text-white font-semibold text-center py-4 px-8 rounded-full hover:bg-red-800 transition-all shadow-[0_8px_30px_rgb(193,18,31,0.3)]">
+                    I am a Donor
+                </a>
+                <a href="{% url 'login' %}" class="bg-gray-200 text-brand-dark font-semibold text-center py-4 px-8 rounded-full hover:bg-gray-300 transition-all">
+                    I need Blood <span class="text-brand-red text-xs relative -top-1 ml-1">(Hospital)</span>
+                </a>
             </div>
+        </div>
+
+        <!-- Right Image Representation -->
+        <div class="lg:w-1/2 relative flex justify-center fade-up mt-12 lg:mt-0">
+            <!-- Utilizing Unsplash Medical Image as Placeholder -->
+            <div class="w-full max-w-md rounded-[2.5rem] overflow-hidden shadow-2xl tilt-card relative">
+                <img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&q=80&w=800" alt="Clinical Vials" class="w-full h-[500px] object-cover grayscale hover:grayscale-0 transition duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+            </div>
+            
+            <!-- Live Impact Floating Card -->
+            <div class="absolute -bottom-6 -left-6 lg:bottom-4 lg:-left-12 bg-white rounded-xl shadow-2xl p-4 flex items-center space-x-3 w-max transform rotate-[-2deg] hover:rotate-0 transition duration-300">
+                <div class="bg-brand-red rounded-full p-2">
+                    <!-- Heart Icon -->
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-[0.6rem] font-bold text-gray-500 tracking-wider">LIVE IMPACT</p>
+                    <p class="text-sm font-extrabold text-brand-dark">Safe & Verified</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-</footer>
-</body></html>
+
+<!-- Process Section -->
+<div class="bg-gray-100 py-20 px-6 sm:px-12 lg:px-24">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-16 fade-up">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight mb-4">The Process of Life</h2>
+            <p class="text-gray-600 text-sm max-w-xl font-medium leading-relaxed">
+                Every drop tells a story. Our clinical workflow ensures the highest standards of safety and efficiency from initial screening to life-saving transfusion.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Step 1 -->
+            <div class="fade-up" style="transition-delay: 100ms;">
+                <h3 class="text-5xl font-black text-red-100 italic mb-4">01</h3>
+                <h4 class="text-lg font-bold text-brand-dark mb-3">Clinical Screening</h4>
+                <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                    A brief <span class="text-gray-800 font-bold">medical</span> consultation ensures your safety and the quality of the donation. <span class="text-gray-800 font-bold">Precision</span> matters most.
+                </p>
+            </div>
+            <!-- Step 2 -->
+            <div class="fade-up" style="transition-delay: 200ms;">
+                <h3 class="text-5xl font-black text-red-100 italic mb-4">02</h3>
+                <h4 class="text-lg font-bold text-brand-dark mb-3">Safe Donation</h4>
+                <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                    Comfort-focused <span class="text-gray-800 font-bold">collection in our</span> premium clinics. <span class="text-gray-800 font-bold">Our</span> professional staff ensures a seamless, painless experience.
+                </p>
+            </div>
+            <!-- Step 3 -->
+            <div class="fade-up" style="transition-delay: 300ms;">
+                <h3 class="text-5xl font-black text-red-100 italic mb-4">03</h3>
+                <h4 class="text-lg font-bold text-brand-dark mb-3">Verified Delivery</h4>
+                <p class="text-xs text-gray-500 leading-relaxed font-medium">
+                    Real-time tracking from our labs to the <span class="text-gray-800 font-bold">operating</span> theater. Hospitals receive life-saving units exactly when needed.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Section -->
+<div class="bg-[#f0f2f5] py-20 px-6 sm:px-12 lg:px-24 lg:-mt-6 z-10 relative">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row gap-6 lg:gap-8 justify-between">
+        
+        <!-- Stat Card 1 -->
+        <div class="bg-white rounded-3xl p-8 lg:p-12 w-full md:w-1/3 shadow-sm hover:shadow-xl transition-shadow duration-300 fade-up">
+            <div class="text-brand-red mb-16">
+                <!-- Icon -->
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+            </div>
+            <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark mb-1 tracking-tight">10k+ Donors</h3>
+            <p class="text-[0.65rem] font-bold tracking-[0.15em] text-gray-400 uppercase">Active Community</p>
+        </div>
+
+        <!-- Stat Card 2 -->
+        <div class="bg-white rounded-3xl p-8 lg:p-12 w-full md:w-1/3 shadow-sm hover:shadow-xl transition-shadow duration-300 fade-up" style="transition-delay: 100ms;">
+            <div class="text-brand-red mb-16">
+                <!-- Hospital Icon -->
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+            </div>
+            <h3 class="text-3xl lg:text-4xl font-extrabold text-brand-dark mb-1 tracking-tight">500+ <br> Hospitals</h3>
+            <p class="text-[0.65rem] font-bold tracking-[0.15em] text-gray-400 uppercase mt-1">Medical Network</p>
+        </div>
+
+        <!-- Stat Card 3 (Red) -->
+        <div class="bg-brand-red rounded-3xl p-8 lg:p-12 w-full md:w-1/3 shadow-xl hover:shadow-2xl hover:shadow-red-500/30 transition-shadow duration-300 fade-up" style="transition-delay: 200ms;">
+            <div class="text-white mb-16">
+                <!-- Sparkle Icon -->
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+                </svg>
+            </div>
+            <h3 class="text-3xl lg:text-4xl font-extrabold text-white mb-1 tracking-tight leading-tight">15k+ Lives <br> Saved</h3>
+            <p class="text-[0.65rem] font-bold tracking-[0.15em] text-red-200 uppercase mt-1">Impact Measured</p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

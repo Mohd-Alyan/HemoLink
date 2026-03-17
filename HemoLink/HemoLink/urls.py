@@ -21,4 +21,14 @@ from app1 import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
+    path('login/', views.login_register, name='login'),
+    path('logout/', views.logout_view, name='logout'),
+    path('dashboard/', views.donor_dashboard, name='dashboard'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('requests/', views.active_requests, name='requests'),
+    path('requests/<int:request_id>/pledge/', views.pledge_request, name='pledge_request'),
+    path('requests/<int:request_id>/fulfill/', views.fulfill_request, name='fulfill_request'),
+    path('status/', views.notifications_status, name='status'),
+    path('toggle-availability/', views.toggle_availability, name='toggle_availability'),
+    path('blood-banks/', views.blood_banks, name='blood_banks'),
 ]
